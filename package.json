@@ -1,0 +1,21 @@
+{
+  "name": "api-rest-acerinox-mpt",
+  "version": "1.0.0",
+  "description": "Api Rest del programa Acerinox MPT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Nuria Romero",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "connect-multiparty": "^2.1.1",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
+}
