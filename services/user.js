@@ -11,7 +11,7 @@ function createToken (user){
         exp: moment().add(14, 'days').unix()
     }
 
-    return jwt.encode(payliad, config.SECRET_TOKEN)
+    return jwt.encode(payload, config.SECRET_TOKEN)
 }
 
 function decodeToken (token){

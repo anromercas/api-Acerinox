@@ -66,9 +66,11 @@ function deleteUser(req, res){
 
 function signUp(req, res){
     const user = new User({
-        name: req.body.name,
-        surname: req.body.surname,
-        secondsurname: req.body.secondsurname
+ //       name: req.body.name,
+ //       surname: req.body.surname,
+ //       secondsurname: req.body.secondsurname,
+        email: req.body.email,
+        password: req.body.password
     })
 
     user.save((err) => {
