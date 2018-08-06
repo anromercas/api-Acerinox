@@ -7,8 +7,14 @@ const config = require('../config')
 function createToken (user){
     const payload = {
         sub: user._id,
+        name: user.name,
+        surname: user.surname,
+        secondsurname: user.secondsurname,
+        email: user.email,
+        role: user.role,
+        image: user.image,
         iat: moment().unix(),
-        exp: moment().add(14, 'days').unix()
+        exp: moment().add(30, 'days').unix()
     }
 
     return jwt.encode(payload, config.SECRET_TOKEN)
@@ -33,7 +39,7 @@ function decodeToken (token){
             })
         }
     })
-
+    console.log(decoded)
     return decoded
 }
 
