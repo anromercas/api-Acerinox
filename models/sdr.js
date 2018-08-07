@@ -12,7 +12,8 @@ const SdrShema = Schema({
 	exposition: String,
 	gravity: String,
 	population_at_risk: Number,
-    visibility: String,
+	visibility: String,
+	state: { type: String, enum: ['Borrador', 'En Creacion', 'Pendiente Aprobacion', 'Terminado', 'Parcheado', 'Parcializado']},
 	cost: Number,
 	image: String
 })

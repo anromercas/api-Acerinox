@@ -58,7 +58,6 @@ function saveSdr(req, res){
         if(err) res.status(500).send({message: `Error al guardar SDR ${err}`})
         if(!sdrStored) res.status(404).send({message: 'El artista no ha sido guardado'})
         res.status(200).send({sdr: sdrStored})
-        console.log(sdr)
     });
 }
 

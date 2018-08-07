@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MptPartialShema = Schema({
+	state: { type: String, enum: ['Borrador', 'Creado', 'Aprobado', 'Realizado']},
 	type: String,
 	date: Date,
 	description: String,

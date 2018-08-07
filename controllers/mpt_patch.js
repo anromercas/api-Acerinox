@@ -10,110 +10,111 @@ var Mpt_patch = require('../models/mpt_patch')
 var Mpt_partial = require('../models/mpt_partial')
 
 
-function getIdeal(req, res){
-   let idealId = req.params.idealId
+function getPatch(req, res){
+   let patchId = req.params.patchId
 
-    Mpt_ideal.findById(idealId).populate({path: 'sdr'}).exec(function(err, mptIdeal){
+   Mpt_patch.findById(patchId).populate({path: 'sdr'}).exec(function(err, mptPatch){
         if(err){
             res.status(500).send({message: `Error al realizar la peticion ${err}`})
         }else{
-            if(!mptIdeal){
-                res.status(404).send({message: `El MPT IDEAL no existe`})
+            if(!mptPatch){
+                res.status(404).send({message: `El MPT PARCHE no existe`})
             }else{
-                res.status(200).send({ mptIdeal })
+                res.status(200).send({ mptPatch })
             }
         }
     })
 }
 
-function getIdeals(req, res){
+function getPatchs(req, res){
     var sdrId = req.params.sdrId
 
     if(!sdrId){
         // sacar todos los Mpt Ideal de la BBDD
-        var find = Mpt_ideal.find({}).sort('state')
+        var find = Mpt_patch.find({}).sort('state')
     }else{
         // sacar el Mpt Ideal de la BBDD asociado al SDR
-        var find = Mpt_ideal.find({ sdr: sdrId })
+        var find = Mpt_patch.find({ sdr: sdrId })
     }
-    find.populate({path: 'sdr'}).exec(function(err, mptIdeals){
+    find.populate({path: 'sdr'}).exec(function(err, mptPatchs){
         if(err){
             res.status(500).send({message: `Error al realizar la peticion ${err}`})
         }else{
-            if(!mptIdeals){
+            if(!mptPatchs){
                 res.status(404).send({message: `El MPT IDEAL no existe`})
             }else{
-                res.status(200).send({ mptIdeals })
+                res.status(200).send({ mptPatchs })
             }
         }
     })
 }
 
-function saveIdeal(req, res){
-    var mptIdeal = new Mpt_ideal();
+function savePatch(req, res){
+    var mptPatch = new Mpt_patch();
 
     var params = req.body;
-    mptIdeal.state = params.state
-    mptIdeal.date = params.date
-    mptIdeal.description = params.description
-    mptIdeal.degree_correction = params.degree_correction
-    mptIdeal.estimated_cost = params.estimated_cost
-    mptIdeal.duration_time = params.duration_time
-    mptIdeal.department_involved = params.department_involved
-    mptIdeal.responsible = params.responsible
-    mptIdeal.advantaje = params.advantaje
-    mptIdeal.problems = params.problems
-    mptIdeal.file = params.file
-    mptIdeal.sdr = params.sdr
+    mptPatch.state = params.state
+    mptPatch.date = params.date
+    mptPatch.description = params.description
+    mptPatch.degree_correction = params.degree_correction
+    mptPatch.estimated_cost = params.estimated_cost
+    mptPatch.duration_time = params.duration_time
+    mptPatch.department_involved = params.department_involved
+    mptPatch.responsible = params.responsible
+    mptPatch.who_will_do = params.who_will_do
+    mptPatch.realization_date = params.realization_date
+    mptPatch.comments = params.comments
+    mptPatch.file = params.file
+    mptPatch.sdr = params.sdr
 
-    mptIdeal.save(function (err, mptIdealStored){
+    mptPatch.save(function (err, mptPatchStored){
         if(err){
             res.status(500).send({ message: `Error al guardar MPT ideal ${err}` })
         }else{
-            if(!mptIdealStored){
+            if(!mptPatchStored){
                 res.status(404).send({ message: 'No se ha podido guardar el MPT Ideal' })
             }else{
-                res.status(200).send({ mptIdeal: mptIdealStored })
+                res.status(200).send({ mptPatch: mptPatchStored })
             }
         }
     });
 }
 
-function updateIdeal(req, res){
-    var idealId = req.params.idealId
+function updatePatch(req, res){
+    var patchId = req.params.patchId
     var update = req.body
 
-    Mpt_ideal.findByIdAndUpdate(idealId, update, (err, idealUpdated) =>{
+    Mpt_patch.findByIdAndUpdate(patchId, update, (err, patchUpdated) =>{
         if(err){
             res.status(500).send({ message: `Error al actualizar MPT Ideal ${err}` })
         }else{
-            if(!idealUpdated){
+            if(!patchUpdated){
                 res.status(404).send({ message: 'No se ha podido actualizar el MPT Ideal' })
             }else{
-                res.status(200).send({ mptIdeal: idealUpdated })
+                res.status(200).send({ mptPatch: patchUpdated })
             }
         }
     })
 }
 
-function deleteIdeal(req, res){
-    var idealId = req.params.idealId
+function deletePatch(req, res){
+    var patchId = req.params.patchId
 
-    Mpt_ideal.findByIdAndRemove(idealId, (err, mptIdealRemoved) =>{
+    Mpt_patch.findByIdAndRemove(patchId, (err, mptPatchRemoved) =>{
         if (err){
             res.status(500).send({message: `error al eliminar el mpt Ideal en BD ${err} `})
         }else{
-            if (!mptIdealRemoved){
+            if (!mptPatchRemoved){
                 res.status(404).send({message: `error: Nose ha podido eliminar el mpt Ideal`})
             }else{
-                res.status(200).send({ mptIdeal: mptIdealRemoved}) 
+                res.status(200).send({ mptPatch: mptPatchRemoved}) 
             } 
         }        
     })
 }
 
 function uploadFile(req, res){
-    var idealId = req.params.idealId;
+    var patchId = req.params.patchId;
     var file_name = 'Archivo no subido...';
     
     if(req.files){

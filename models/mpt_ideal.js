@@ -4,16 +4,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MptIdealShema = Schema({
-	type: String,
+	state: { type: String, enum: ['Borrador', 'Creado', 'Aprobado', 'Realizado']},
 	date: Date,
 	description: String,
-	degree_correction: String,
+	degree_correction: Number,
 	estimated_cost: Number,
-	duration_time: String,
+	duration_time: { type: String, enum: ['Dias', 'Semanas', 'Meses', 'Años', 'Siempre']},
 	departmen_involved: String,
 	responsible: { type:Schema.ObjectId, ref: 'User' },
     advantaje: String,
-	problems: Number,
+	problems: String,
 	file: String,
     sdr: { type:Schema.ObjectId, ref: 'Sdr' }
 })

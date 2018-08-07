@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MptPatchShema = Schema({
-	type: String,
+	state: { type: String, enum: ['Borrador', 'Creado', 'Aprobado', 'Realizado']},
 	date: Date,
 	description: String,
 	degree_correction: String,
@@ -13,9 +13,10 @@ const MptPatchShema = Schema({
 	departmen_involved: String,
 	responsible: { type:Schema.ObjectId, ref: 'User' },
     who_will_do: String,
-    realization_date: Number,
+    realization_date: Date,
     comments: String,
-    sdr: { type:Schema.ObjectId, ref: 'Sdr' }
+	sdr: { type:Schema.ObjectId, ref: 'Sdr' },
+	file: String
 })
 
 module.exports = mongoose.model('MptPatch', MptPatchShema);
