@@ -13,7 +13,8 @@ const SdrShema = Schema({
 	gravity: String,
 	population_at_risk: Number,
 	visibility: String,
-	state: { type: String, enum: ['Borrador', 'En Creacion', 'Pendiente Aprobacion', 'Terminado', 'Parcheado', 'Parcializado']},
+	created_by: { type:Schema.ObjectId, ref: 'User' },
+	state: { type: String, enum: ['Borrador','Validacion' ,'En Creacion', 'Pendiente Aprobacion', 'Terminado', 'Parcheado', 'Parcializado']},
 	cost: Number,
 	image: String
 })

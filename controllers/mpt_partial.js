@@ -2,7 +2,7 @@
 
 var path = require('path')
 var fs = require('fs')
-varmongoosePaginate = require('mongoose-pagination')
+var mongoosePaginate = require('mongoose-pagination')
 
 var Sdr = require('../models/sdr')
 var Mpt_ideal = require('../models/mpt_ideal')
@@ -10,111 +10,111 @@ var Mpt_patch = require('../models/mpt_patch')
 var Mpt_partial = require('../models/mpt_partial')
 
 
-function getPatch(req, res){
-   let patchId = req.params.patchId
+function getPartial(req, res){
+   let partialId = req.params.partialId
 
-   Mpt_patch.findById(patchId).populate({path: 'sdr'}).exec(function(err, mptPatch){
+   Mpt_partial.findById(partialId).populate({path: 'sdr'}).exec(function(err, mptPartial){
         if(err){
             res.status(500).send({message: `Error al realizar la peticion ${err}`})
         }else{
-            if(!mptPatch){
-                res.status(404).send({message: `El MPT PARCHE no existe`})
+            if(!mptPartial){
+                res.status(404).send({message: `El MPT PARCIAL no existe`})
             }else{
-                res.status(200).send({ mptPatch })
+                res.status(200).send({ mptPartial })
             }
         }
     })
 }
 
-function getPatchs(req, res){
+function getPartials(req, res){
     var sdrId = req.params.sdrId
 
     if(!sdrId){
         // sacar todos los Mpt Ideal de la BBDD
-        var find = Mpt_patch.find({}).sort('state')
+        var find = Mpt_partial.find({}).sort('state')
     }else{
         // sacar el Mpt Ideal de la BBDD asociado al SDR
-        var find = Mpt_patch.find({ sdr: sdrId })
+        var find = Mpt_partial.find({ sdr: sdrId })
     }
-    find.populate({path: 'sdr'}).exec(function(err, mptPatchs){
+    find.populate({path: 'sdr'}).exec(function(err, mptPartials){
         if(err){
             res.status(500).send({message: `Error al realizar la peticion ${err}`})
         }else{
-            if(!mptPatchs){
-                res.status(404).send({message: `El MPT PARCHE no existe`})
+            if(!mptPartials){
+                res.status(404).send({message: `El MPT PARCIAL no existe`})
             }else{
-                res.status(200).send({ mptPatchs })
+                res.status(200).send({ mptPartials })
             }
         }
     })
 }
 
-function savePatch(req, res){
-    var mptPatch = new Mpt_patch();
+function savePartial(req, res){
+    var mptPartial = new Mpt_partial();
 
     var params = req.body;
-    mptPatch.state = params.state
-    mptPatch.date = params.date
-    mptPatch.description = params.description
-    mptPatch.degree_correction = params.degree_correction
-    mptPatch.estimated_cost = params.estimated_cost
-    mptPatch.duration_time = params.duration_time
-    mptPatch.department_involved = params.department_involved
-    mptPatch.responsible = params.responsible
-    mptPatch.who_will_do = params.who_will_do
-    mptPatch.realization_date = params.realization_date
-    mptPatch.comments = params.comments
-    mptPatch.file = params.file
-    mptPatch.sdr = params.sdr
+    mptPartial.state = params.state
+    mptPartial.date = params.date
+    mptPartial.description = params.description
+    mptPartial.degree_correction = params.degree_correction
+    mptPartial.estimated_cost = params.estimated_cost
+    mptPartial.duration_time = params.duration_time
+    mptPartial.department_involved = params.department_involved
+    mptPartial.responsible = params.responsible
+    mptPartial.who_will_do = params.who_will_do
+    mptPartial.realization_date = params.realization_date
+    mptPartial.comments = params.comments
+    mptPartial.file = params.file
+    mptPartial.sdr = params.sdr
 
-    mptPatch.save(function (err, mptPatchStored){
+    Mpt_partial.save(function (err, mptPartialStored){
         if(err){
             res.status(500).send({ message: `Error al guardar MPT ideal ${err}` })
         }else{
-            if(!mptPatchStored){
+            if(!mptPartialStored){
                 res.status(404).send({ message: 'No se ha podido guardar el MPT Ideal' })
             }else{
-                res.status(200).send({ mptPatch: mptPatchStored })
+                res.status(200).send({ mptPartial: mptPartialStored })
             }
         }
     });
 }
 
-function updatePatch(req, res){
-    var patchId = req.params.patchId
+function updatePartial(req, res){
+    var partialId = req.params.partialId
     var update = req.body
 
-    Mpt_patch.findByIdAndUpdate(patchId, update, (err, patchUpdated) =>{
+    Mpt_partial.findByIdAndUpdate(partialId, update, (err, partialUpdated) =>{
         if(err){
             res.status(500).send({ message: `Error al actualizar MPT Ideal ${err}` })
         }else{
             if(!patchUpdated){
                 res.status(404).send({ message: 'No se ha podido actualizar el MPT Ideal' })
             }else{
-                res.status(200).send({ mptPatch: patchUpdated })
+                res.status(200).send({ mptPartial: patchUpdated })
             }
         }
     })
 }
 
-function deletePatch(req, res){
-    var patchId = req.params.patchId
+function deletePartial(req, res){
+    var partialId = req.params.partialId
 
-    Mpt_patch.findByIdAndRemove(patchId, (err, mptPatchRemoved) =>{
+    Mpt_partial.findByIdAndRemove(partialId, (err, mptPaartialRemoved) =>{
         if (err){
             res.status(500).send({message: `error al eliminar el mpt Ideal en BD ${err} `})
         }else{
-            if (!mptPatchRemoved){
+            if (!mptPaartialRemoved){
                 res.status(404).send({message: `error: Nose ha podido eliminar el mpt Ideal`})
             }else{
-                res.status(200).send({ mptPatch: mptPatchRemoved}) 
+                res.status(200).send({ mptPatch: mptPaartialRemoved}) 
             } 
         }        
     })
 }
 
 function uploadFile(req, res){
-    var patchId = req.params.patchId;
+    var partialId = req.params.partialId
     var file_name = 'Archivo no subido...';
     
     if(req.files){
@@ -127,11 +127,11 @@ function uploadFile(req, res){
     
         if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif' || file_ext == 'pdf' || file_ext == 'mp3' || file_ext == 'ogg'
         || file_ext == 'wav' || file_ext == 'avi' || file_ext == '3gp' || file_ext == 'mp4'){
-            Mpt_patch.findByIdAndUpdate(patchId, {file: file_name}, (err, patchUpdated) =>{
-                if (!patchUpdated){
+            Mpt_partial.findByIdAndUpdate(partialId, {file: file_name}, (err, partialUpdated) =>{
+                if (!partialUpdated){
                     res.status(404).send({message: `error: Nose ha podido actualizar el archivo`})
                 }else{
-                    res.status(200).send({ mptPatch: patchUpdated})
+                    res.status(200).send({ mptPatch: partialUpdated})
                 }
             });
         }else{
@@ -144,7 +144,7 @@ function uploadFile(req, res){
 
 function getFile(req, res){
     var file = req.params.file
-    var path_file = './uploads/mpt_patch/'+ file
+    var path_file = './uploads/mpt_paartial/'+ file
 
     fs.exists(path_file, function(exists){
         if(exists){
@@ -156,11 +156,11 @@ function getFile(req, res){
 }
 
 module.exports = {
-    getPatch,
-    savePatch,
-    getPatchs,
-    updatePatch,
-    deletePatch,
+    getPartial,
+    savePartial,
+    getPartials,
+    updatePartial,
+    deletePartial,
     uploadFile,
     getFile
 }

@@ -7,15 +7,15 @@ const config = require('./config')
 mongoose.Promise = global.Promise;
 mongoose.connect(config.db, (err, res) => {
     if(err) {
-        return console.log(`Error al conectar a la base de datos: ${err}`)
+        return console.log(`Error al conectar a la base de datos: ${err}`);
     }
-    console.log('Conexion a la base de datos establecida...')
+    console.log('Conexion a la base de datos establecida... ');
 
     app.listen(config.port, () => {
-        console.log(`API REST corriendo en la url: localhost:${config.port}`);
-    })
+        console.log('API REST corriendo en la url: \x1b[32m%s\x1b[0m', `localhost:${config.port}`);
+    });
 
-})
+});
 
 
 

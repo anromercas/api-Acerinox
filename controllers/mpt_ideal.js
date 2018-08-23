@@ -124,7 +124,8 @@ function uploadFile(req, res){
         var ext_split = file_name.split('\.')
         var file_ext = ext_split[1]
     
-        if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif' || file_ext == 'pdf'){
+        if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif' || file_ext == 'pdf' || file_ext == 'mp3' || file_ext == 'ogg'
+        || file_ext == 'wav' || file_ext == 'avi' || file_ext == '3gp' || file_ext == 'mp4'){
             Mpt_ideal.findByIdAndUpdate(idealId, {file: file_name}, (err, idealUpdated) =>{
                 if (!idealUpdated){
                     res.status(404).send({message: `error: Nose ha podido actualizar el archivo`})

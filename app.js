@@ -9,15 +9,12 @@ const app = express()
 var user_routes = require('./routes/user')
 var sdr_routes = require('./routes/sdr')
 var ideal_routes = require('./routes/mpt_ideal')
+var patch_routes = require('./routes/mpt_patch')
+//var partial_routes = require('./routes/mpt_partial')
 
 //middlewares. 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-
-// rutas base
-app.use('/api', user_routes)
-app.use('/api', sdr_routes)
-app.use('/api', ideal_routes)
 
 // Configurar cabeceras y cors
 app.use((req, res, next) => {
@@ -27,6 +24,15 @@ app.use((req, res, next) => {
     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
     next();
 });
+
+// rutas base
+app.use('/api', user_routes)
+app.use('/api', sdr_routes)
+app.use('/api', ideal_routes)
+app.use('/api', patch_routes)
+//app.use('/api', partial_routes)
+
+
 
 // exportar
 module.exports = app

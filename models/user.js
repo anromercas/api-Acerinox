@@ -1,42 +1,24 @@
 'use strict'
 
 const mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator') ;
 const Schema = mongoose.Schema;
-//const bcrypt = require('bcrypt-nodejs')
-//const crypto = require('crypto')
+
+var rolesValidos = {
+	values: ['LIDER', 'SUPERVISOR', 'DIRECTOR', 'ADMIN'],
+	message: '{VALUE} NO ES UN ROL PERMITIDO'
+};
 
 const UserShema = Schema({
-	name: String,
-	surname: String,
-	secondsurname: String,
-	email: { type: String, unique: true, lowercase: true },
-	password: String,
-	//password: { type: String, select: false },
-	//singupDate: { type: Date, default: Date.now() },
-	//lastLogin: Date,
-	image: String,
-	role: { type: String, enum: ['Lider', 'Supervisor', 'Admin']}
-})
-/*
-UserShema.pre('save', function (next) {
-	let user = this
-	if(!user.isModified('password')) return next()
+	name: { type: String, required: [true, 'El nombre es necesario'], lowercase: true },
+	surname: { type: String, required: [true, 'El primer apellido es necesario'], lowercase: true },
+	secondsurname: { type: String, required: [true, 'El segundo apellido es necesario'], lowercase: true },
+	email: { type: String, required: [true, 'El email es necesario'], unique: true, lowercase: true },
+	password: { type: String, required: [true, 'El nombre es necesario'], lowercase: true },
+	image: { type: String, required: false },
+	role: { type: String, enum: rolesValidos, default: 'LIDER'}
+});
 
-	bcrypt.genSalt(10, (err, salt) => {
-		if(err) return next()
-		bcrypt.hash(user.password, salt, null, (err, hash) => {
-			if(err) return next(err)
-			user.password = hash
-			next()
-		})
-	})
-})
+UserShema.plugin(uniqueValidator, { message: ' El {PATH} debe ser único'});
 
-UserShema.methods.gravatar = function() {
-	if(!this.email) return `https://gravatar.com/avatar/?s=200&d=retro`
-
-	const md5 = crypto.createHash('md5').update(this.email).digest('hex')
-	return `https://gravatar.com/avatar/${md5}?s=200&d=retro`
-}
-*/
 module.exports = mongoose.model('User', UserShema);

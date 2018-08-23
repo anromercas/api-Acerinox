@@ -9,7 +9,7 @@ const MptPatchShema = Schema({
 	description: String,
 	degree_correction: String,
 	estimated_cost: Number,
-	duration_time: String,
+	duration_time: { type: String, enum: ['Dias', 'Semanas', 'Meses', 'Años', 'Siempre']},
 	departmen_involved: String,
 	responsible: { type:Schema.ObjectId, ref: 'User' },
     who_will_do: String,

@@ -10,11 +10,11 @@ const MptPartialShema = Schema({
 	description: String,
 	degree_correction: String,
 	estimated_cost: Number,
-	duration_time: String,
+	duration_time: { type: String, enum: ['Dias', 'Semanas', 'Meses', 'Años', 'Siempre']},
 	departmen_involved: String,
 	responsible: { type:Schema.ObjectId, ref: 'User' },
     advantaje_solution: String,
-    problems_solution: Number,
+    problems_solution: String,
     doubts: String,
     sdr: { type:Schema.ObjectId, ref: 'Sdr' }
 })
