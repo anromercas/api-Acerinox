@@ -8,14 +8,14 @@ const multipart = require('connect-multiparty');
 const md_upload = multipart({uploadDir: './uploads/users'});
 
 //rutas
-api.get('/probando-controlador',auth ,UserCtrl.pruebas);
 api.post('/register', UserCtrl.saveUser);
+// api.post('/register/:token?', UserCtrl.saveUser);
 api.post('/login', UserCtrl.loginUser);
 api.put('/update-user/:userId', auth, UserCtrl.updateUser);
 api.post('/upload-image-user/:userId', auth, md_upload, UserCtrl.uploadImage);
-api.get('/get-image-user/:imageFile', UserCtrl.getImageFile);
+api.get('/get-image-user/:imageFile',auth, UserCtrl.getImageFile);
 
-api.get('/user', UserCtrl.getUsers);
+api.get('/user/:desde', UserCtrl.getUsers);
 api.get('/user/:userId', UserCtrl.getUser);
 
 api.delete('/user/:userId', auth, UserCtrl.deleteUser);
