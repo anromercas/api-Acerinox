@@ -51,7 +51,7 @@ const SdrShema = Schema({
 	is_it_concrete: { type: Boolean, required: [true, 'Es concreto es necesario'] },
 	created_by: { type:Schema.ObjectId, ref: 'User' },
 	state: { type: String, enum: estado},
-	cost: { type: Number, required: [true, 'El coste es necesario'], lowercase: true },
+	cost: { type: Number, required: [true, 'El coste es necesario'] },
 	image: { type: String, required: false },
 	date: { type: Date, required: [true, 'La fecha es necesaria']},
 	department: { type: String, enum: departamentos },

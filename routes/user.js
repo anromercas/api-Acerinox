@@ -15,7 +15,7 @@ api.put('/update-user/:userId', auth, UserCtrl.updateUser);
 api.post('/upload-image-user/:userId', auth, md_upload, UserCtrl.uploadImage);
 api.get('/get-image-user/:imageFile',auth, UserCtrl.getImageFile);
 
-api.get('/user/:desde', UserCtrl.getUsers);
+api.get('/user/:desde?', UserCtrl.getUsers);
 api.get('/user/:userId', UserCtrl.getUser);
 
 api.delete('/user/:userId', auth, UserCtrl.deleteUser);

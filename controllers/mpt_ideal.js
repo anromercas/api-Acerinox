@@ -1,99 +1,98 @@
 'user strict'
 
-var path = require('path')
-var fs = require('fs')
-varmongoosePaginate = require('mongoose-pagination')
+var path = require('path');
+var fs = require('fs');
+var mongoosePaginate = require('mongoose-pagination');
 
-var Sdr = require('../models/sdr')
-var Mpt_ideal = require('../models/mpt_ideal')
-var Mpt_patch = require('../models/mpt_patch')
-var Mpt_partial = require('../models/mpt_partial')
+var Sdr = require('../models/sdr');
+var Mpt_ideal = require('../models/mpt_ideal');
+var Mpt_patch = require('../models/mpt_patch');
+var Mpt_partial = require('../models/mpt_partial');
 
 
 function getIdeal(req, res){
-   let idealId = req.params.idealId
+   var idealId = req.params.idealId;
 
-    Mpt_ideal.findById(idealId).populate({path: 'sdr'}).exec(function(err, mptIdeal){
+    Mpt_ideal.findById(idealId)
+    .exec((err, mptIdeal) => {
         if(err){
-            res.status(500).send({message: `Error al realizar la peticion ${err}`})
+            res.status(500).send({message: `Error al realizar la peticion ${err}`});
         }else{
             if(!mptIdeal){
-                res.status(404).send({message: `El MPT IDEAL no existe`})
+                res.status(404).send({message: `El MPT IDEAL no existe`});
             }else{
-                res.status(200).send({ mptIdeal })
+                res.status(200).send({ mptIdeal });
             }
         }
-    })
+    });
 }
 
 function getIdeals(req, res){
-    var sdrId = req.params.sdrId
-
-    if(!sdrId){
-        // sacar todos los Mpt Ideal de la BBDD
-        var find = Mpt_ideal.find({}).sort('state')
-    }else{
-        // sacar el Mpt Ideal de la BBDD asociado al SDR
-        var find = Mpt_ideal.find({ sdr: sdrId })
-    }
-    find.populate({path: 'sdr'}).exec(function(err, mptIdeals){
+    var sdrId = req.params.sdrId;
+    // sacar todos los Mpt Ideal de la BBDD
+    Mpt_ideal.find({})
+    .sort('state')
+    .exec((err, mptIdeals) => {
         if(err){
-            res.status(500).send({message: `Error al realizar la peticion ${err}`})
+            res.status(500).send({message: `Error al realizar la peticion ${err}`});
         }else{
             if(!mptIdeals){
-                res.status(404).send({message: `El MPT IDEAL no existe`})
+                res.status(404).send({message: `El MPT IDEAL no existe`});
             }else{
-                res.status(200).send({ mptIdeals })
+                res.status(200).send({ mptIdeals });
             }
         }
-    })
+    });
 }
 
 function saveIdeal(req, res){
     var mptIdeal = new Mpt_ideal();
 
     var params = req.body;
-    mptIdeal.state = params.state
-    mptIdeal.date = params.date
-    mptIdeal.description = params.description
-    mptIdeal.degree_correction = params.degree_correction
-    mptIdeal.estimated_cost = params.estimated_cost
-    mptIdeal.duration_time = params.duration_time
-    mptIdeal.department_involved = params.department_involved
-    mptIdeal.responsible = params.responsible
-    mptIdeal.advantaje = params.advantaje
-    mptIdeal.problems = params.problems
-    mptIdeal.file = params.file
-    mptIdeal.sdr = params.sdr
+    mptIdeal.name = params.name;
+    mptIdeal.state = params.state;
+    mptIdeal.date = params.date;
+    mptIdeal.description = params.description;
+    mptIdeal.degree_correction = params.degree_correction;
+    mptIdeal.estimated_cost = params.estimated_cost;
+    mptIdeal.duration_time = params.duration_time;
+    mptIdeal.department_involved = params.department_involved;
+    mptIdeal.responsible = params.responsible;
+    mptIdeal.advantaje = params.advantaje;
+    mptIdeal.problems = params.problems;
+    mptIdeal.file = params.file;
 
-    mptIdeal.save(function (err, mptIdealStored){
+    console.log(mptIdeal);
+   
+
+    mptIdeal.save((err, mptIdealStored) => {
         if(err){
-            res.status(500).send({ message: `Error al guardar MPT ideal ${err}` })
+            res.status(500).send({ message: `Error al guardar MPT ideal ${err}` });
         }else{
             if(!mptIdealStored){
-                res.status(404).send({ message: 'No se ha podido guardar el MPT Ideal' })
+                res.status(404).send({ message: 'No se ha podido guardar el MPT Ideal' });
             }else{
-                res.status(200).send({ mptIdeal: mptIdealStored })
+                res.status(200).send({ mptIdeal: mptIdealStored });
             }
         }
     });
 }
 
 function updateIdeal(req, res){
-    var idealId = req.params.idealId
-    var update = req.body
+    var idealId = req.params.idealId;
+    var update = req.body;
 
     Mpt_ideal.findByIdAndUpdate(idealId, update, (err, idealUpdated) =>{
         if(err){
-            res.status(500).send({ message: `Error al actualizar MPT Ideal ${err}` })
+            res.status(500).send({ message: `Error al actualizar MPT Ideal ${err}` });
         }else{
             if(!idealUpdated){
-                res.status(404).send({ message: 'No se ha podido actualizar el MPT Ideal' })
+                res.status(404).send({ message: 'No se ha podido actualizar el MPT Ideal' });
             }else{
-                res.status(200).send({ mptIdeal: idealUpdated })
+                res.status(200).send({ mptIdeal: idealUpdated });
             }
         }
-    })
+    });
 }
 
 function deleteIdeal(req, res){

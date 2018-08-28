@@ -10,7 +10,7 @@ var user_routes = require('./routes/user');
 var sdr_routes = require('./routes/sdr');
 var ideal_routes = require('./routes/mpt_ideal');
 var patch_routes = require('./routes/mpt_patch');
-//var partial_routes = require('./routes/mpt_partial')
+var partial_routes = require('./routes/mpt_partial');
 var search_routes = require('./routes/search');
 
 //middlewares. 
@@ -31,7 +31,7 @@ app.use('/api', user_routes);
 app.use('/api', sdr_routes);
 app.use('/api', ideal_routes);
 app.use('/api', patch_routes);
-//app.use('/api', partial_routes)
+app.use('/api', partial_routes);
 app.use('/api', search_routes);
 
 
